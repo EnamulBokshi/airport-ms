@@ -1,3 +1,22 @@
+
+### Explanation of the Diagram
+
+- **Entities and Fields**: Each box represents an entity (table) with primary keys (PK) and foreign keys (FK) indicated.
+- **Relationships**:
+  - **Admin** manages multiple **Users**.
+  - **User** has multiple **EntranceLog** entries.
+  - **Gate** can have multiple **EntranceLog** entries and is assigned to **Users** based on their role or purpose.
+  - **FamilyMember** relates to a **User** as one boarding member per family.
+  - **ParcelReceiver** logs specific to parcel gate entries.
+  - **ManualTicket** is issued per **User** and linked to a specific **Gate**.
+
+### Using Mermaid on GitHub
+
+To render this diagram on GitHub:
+1. Copy the code above into your README file or any `.md` file in your GitHub repository.
+2. Ensure Mermaid diagrams are enabled on your GitHub repository (some rendering may depend on GitHub features or using preview tools if not natively supported).
+
+Let me know if there are any further tweaks you'd like to make!
 ```mermaid
 erDiagram
     Admin {
