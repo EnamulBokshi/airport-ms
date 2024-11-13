@@ -9,14 +9,6 @@
   - **FamilyMember** relates to a **User** as one boarding member per family.
   - **ParcelReceiver** logs specific to parcel gate entries.
   - **ManualTicket** is issued per **User** and linked to a specific **Gate**.
-
-### Using Mermaid on GitHub
-
-To render this diagram on GitHub:
-1. Copy the code above into your README file or any `.md` file in your GitHub repository.
-2. Ensure Mermaid diagrams are enabled on your GitHub repository (some rendering may depend on GitHub features or using preview tools if not natively supported).
-
-Let me know if there are any further tweaks you'd like to make!
 ```mermaid
 erDiagram
     Admin {
