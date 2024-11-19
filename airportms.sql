@@ -1,62 +1,95 @@
+-- Admin Table
 CREATE TABLE Admin (
     AdminID INT PRIMARY KEY,
     Name VARCHAR(50),
-    Email VARCHAR(100),
-    Password VARCHAR(50)
+    Username VARCHAR(50),
+    Password VARCHAR(50),
+    ContactInfo VARCHAR(100)
 );
 
-CREATE TABLE User (
-    UserID INT PRIMARY KEY,
+-- Employee Table
+CREATE TABLE Employee (
+    EmployeeID INT PRIMARY KEY,
     Name VARCHAR(50),
-    Occupation VARCHAR(50),
-    AirportID VARCHAR(20),
-    GateNumber INT,
-    IDType ENUM('EmployeeID', 'NID'),
-    EntranceStatus BOOLEAN,
-    AdminID INT,
-    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID)
+    Role ENUM('Pilot', 'Engineer', 'Ground Staff'),
+    AirlineID INT,
+    GateID INT,
+    ContactInfo VARCHAR(100),
+    FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID),
+    FOREIGN KEY (GateID) REFERENCES Gate(GateID)
 );
 
+-- Airline Table
+CREATE TABLE Airline (
+    AirlineID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Country VARCHAR(50),
+    ContactInfo VARCHAR(100)
+);
+
+-- Flight Table
+CREATE TABLE Flight (
+    FlightID INT PRIMARY KEY,
+    AirlineID INT,
+    Source VARCHAR(50),
+    Destination VARCHAR(50),
+    Date DATE,
+    Time TIME,
+    GateID INT,
+    PilotID INT,
+    Status ENUM('Scheduled', 'Delayed', 'Departed'),
+    FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID),
+    FOREIGN KEY (GateID) REFERENCES Gate(GateID),
+    FOREIGN KEY (PilotID) REFERENCES Pilot(PilotID)
+);
+
+-- Pilot Table
+CREATE TABLE Pilot (
+    PilotID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    LicenseNo VARCHAR(50),
+    ExperienceYears INT,
+    AirlineID INT,
+    FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID)
+);
+
+-- Passenger Table
+CREATE TABLE Passenger (
+    PassengerID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    NID VARCHAR(20),
+    ContactInfo VARCHAR(100),
+    FlightID INT,
+    TicketID INT,
+    FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
+);
+
+-- Gate Table
 CREATE TABLE Gate (
     GateID INT PRIMARY KEY,
-    GateNumber INT,
     Location VARCHAR(100),
-    Purpose ENUM('Employee', 'Public', 'Parcel Only'),
-    OccupationType VARCHAR(50)
+    Purpose ENUM('Employee', 'Flight', 'Public', 'Parcel'),
+    AssignedTo VARCHAR(100)
 );
 
-CREATE TABLE EntranceLog (
-    LogID INT PRIMARY KEY,
-    UserID INT,
-    GateID INT,
-    EntryTime DATETIME,
-    ExitTime DATETIME,
-    ReasonForEntry VARCHAR(200),
-    FOREIGN KEY (UserID) REFERENCES User(UserID),
-    FOREIGN KEY (GateID) REFERENCES Gate(GateID)
-);
-
-CREATE TABLE FamilyMember (
-    FamilyMemberID INT PRIMARY KEY,
-    NID VARCHAR(20),
+-- Public User Table
+CREATE TABLE PublicUser (
+    UserID INT PRIMARY KEY,
     Name VARCHAR(50),
-    BoardingMemberID INT,
-    FOREIGN KEY (BoardingMemberID) REFERENCES User(UserID)
-);
-
-CREATE TABLE ParcelReceiver (
-    ReceiverID INT PRIMARY KEY,
     NID VARCHAR(20),
-    Name VARCHAR(50),
+    RelationToPassenger VARCHAR(50),
+    ReasonForVisit VARCHAR(100),
     GateID INT,
     FOREIGN KEY (GateID) REFERENCES Gate(GateID)
 );
 
-CREATE TABLE ManualTicket (
-    TicketID INT PRIMARY KEY,
+-- Parcel Table
+CREATE TABLE Parcel (
+    ParcelID INT PRIMARY KEY,
+    ReceiverName VARCHAR(50),
+    NID VARCHAR(20),
+    ContactInfo VARCHAR(100),
     GateID INT,
-    UserID INT,
-    IssueTime DATETIME,
-    FOREIGN KEY (GateID) REFERENCES Gate(GateID),
-    FOREIGN KEY (UserID) REFERENCES User(UserID)
+    Reason VARCHAR(100),
+    FOREIGN KEY (GateID) REFERENCES Gate(GateID)
 );
