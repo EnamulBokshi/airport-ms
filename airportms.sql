@@ -1,10 +1,31 @@
+
+CREATE DATABASE AMS;
 CREATE TABLE Admin (
     AdminID INT PRIMARY KEY,
     Name VARCHAR(50),
     Email VARCHAR(100),
-    Password VARCHAR(50)
+    Password VARCHAR(50),
+    role enum('Manager','Officer','Editor')
 );
-
+create table branch(
+    branch_id INT not null PRIMARY KEY,
+    branch_name VARCHAR(50),
+    branch_location VARCHAR(200),
+    branch_type enum ('Domestic','International'),
+    stuff INT not null,
+    Foreign Key (stuff) REFERENCES Admin(AdminID)
+);
+CREATE table Contact(
+    contact_ID int not null PRIMARY KEY,
+    address VARCHAR(200),
+    email VARCHAR(50),
+    mobile varchar(20),
+    branch int not NULL
+);
+CREATE Table Airline(
+    air_id int not NULL PRIMARY KEY,
+    air_name varchar(100)
+);
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
     Name VARCHAR(50),
@@ -16,7 +37,6 @@ CREATE TABLE User (
     AdminID INT,
     FOREIGN KEY (AdminID) REFERENCES Admin(AdminID)
 );
-
 CREATE TABLE Gate (
     GateID INT PRIMARY KEY,
     GateNumber INT,
@@ -24,7 +44,6 @@ CREATE TABLE Gate (
     Purpose ENUM('Employee', 'Public', 'Parcel Only'),
     OccupationType VARCHAR(50)
 );
-
 CREATE TABLE EntranceLog (
     LogID INT PRIMARY KEY,
     UserID INT,
